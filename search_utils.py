@@ -49,7 +49,7 @@ def build_faiss_pipeline(jobs, groq_api_key, embedding_model, llm_model, top_k):
         search_type="mmr",
         search_kwargs={"k": top_k, "fetch_k": 30}
     )
-    llm = ChatGroq(api_key=groq_api_key, model_name=llm_model, temperature=0.2, max_tokens=512)
+    llm = ChatGroq(groq_api_key=groq_api_key,model_name=llm_model, temperature=0.2, max_tokens=512)
     RAG_PROMPT = PromptTemplate(input_variables=["context", "question"], template=RAG_PROMPT_TEMPLATE)
 
     def format_docs(docs):
@@ -93,7 +93,7 @@ def build_pinecone_pipeline(jobs, groq_api_key, pinecone_api_key, index_name, em
         index_time = round((time.time() - start) * 1000, 1)
 
         retriever = vectorstore.as_retriever(search_kwargs={"k": top_k})
-        llm = ChatGroq(api_key=groq_api_key, model_name=llm_model, temperature=0.2, max_tokens=512)
+        llm = ChatGroq(groq_api_key=groq_api_key,model_name=llm_model, temperature=0.2, max_tokens=512)
         RAG_PROMPT = PromptTemplate(input_variables=["context", "question"], template=RAG_PROMPT_TEMPLATE)
 
         def format_docs(docs):
@@ -137,7 +137,7 @@ def explain_node_with_agent(node_name, node_label, node_details, groq_api_key, l
     """AI Agent that explains a clicked graph node using Groq LLM"""
     try:
         import time as _time
-        llm = ChatGroq(api_key=groq_api_key, model_name=llm_model, temperature=0.3, max_tokens=400)
+        llm = ChatGroq(groq_api_key=groq_api_key,model_name=llm_model, temperature=0.3, max_tokens=400)
         prompt = NODE_AGENT_PROMPT.format(
             label=node_label,
             name=node_name,
