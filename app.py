@@ -87,7 +87,7 @@ total_edges = sum(stats["edges"].values())
 
 # ── Sidebar ──
 with st.sidebar:
-    st.markdown("<div style='text-align:center;padding:16px 0;'><div style='font-size:1.8rem;font-weight:700;background:linear-gradient(135deg,#6366f1,#8b5cf6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;'>Knowledge Graph</div><div style='color:#64748b;font-size:0.75rem;'>Enterprise Intelligence | Milestone 4</div></div>", unsafe_allow_html=True)
+    st.markdown("<div style='text-align:center;padding:16px 0;'><div style='font-size:1.8rem;font-weight:700;background:linear-gradient(135deg,#6366f1,#8b5cf6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;'>Knowledge Graph</div></div>", unsafe_allow_html=True)
     st.divider()
 
     st.markdown("### Filters")
@@ -144,7 +144,7 @@ if pri_filter:
     fdf = fdf[fdf["Priority"].isin(pri_filter)]
 
 # ── Header ──
-st.markdown("<div class='gradient-title'>AI Knowledge Graph Dashboard</div><div style='text-align:center;color:#64748b;margin-bottom:24px;'>Milestone 4 | Interactive Graph Exploration | FAISS vs Pinecone | RAG Search | Node AI Agent</div>", unsafe_allow_html=True)
+st.markdown("<div class='gradient-title'>AI Knowledge Graph Dashboard</div>", unsafe_allow_html=True)
 
 # ── Top Metrics ──
 c1, c2, c3, c4, c5 = st.columns(5)
@@ -774,5 +774,3 @@ with tab6:
                     color_continuous_scale=["#0f172a", "#6366f1", "#a78bfa"], aspect="auto")
     fig.update_layout(paper_bgcolor="rgba(0,0,0,0)", font_color="#e2e8f0")
     st.plotly_chart(fig, use_container_width=True)
-
-st.markdown("<div style='text-align:center;padding:20px;color:#475569;border-top:1px solid rgba(99,102,241,0.2);margin-top:40px;'>AI Knowledge Graph Builder | Milestone 4 | LangChain + FAISS + Pinecone + Groq + Neo4j + Streamlit + Node AI Agent</div>", unsafe_allow_html=True)
