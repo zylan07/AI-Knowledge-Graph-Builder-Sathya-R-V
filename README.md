@@ -20,7 +20,11 @@
 
 ## 📸 Dashboard Preview
 
-![AI Knowledge Graph Builder Dashboard](assets/)
+![Dashboard Overview](assets/screenshots/image1.png)
+
+![Knowledge Graph View](assets/screenshots/image2.png)
+
+![RAG Semantic Search](assets/screenshots/image3.png)
 
 ---
 
