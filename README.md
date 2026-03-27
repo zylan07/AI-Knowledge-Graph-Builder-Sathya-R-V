@@ -22,9 +22,9 @@
 
 ![Dashboard Overview](./assests/image1.png)
 
-![Knowledge Graph View](./assets/image2.png)
+![Knowledge Graph View](./assests/image2.png)
 
-![RAG Semantic Search](./assets/image3.png)
+![RAG Semantic Search](./assests/image3.png)
 
 ---
 
