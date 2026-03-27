@@ -20,11 +20,11 @@
 
 ## 📸 Dashboard Preview
 
-![Dashboard Overview](assets/screenshots/image1.png)
+![Dashboard Overview](./assests/image1.png)
 
-![Knowledge Graph View](assets/screenshots/image2.png)
+![Knowledge Graph View](./assets/image2.png)
 
-![RAG Semantic Search](assets/screenshots/image3.png)
+![RAG Semantic Search](./assets/image3.png)
 
 ---
 
