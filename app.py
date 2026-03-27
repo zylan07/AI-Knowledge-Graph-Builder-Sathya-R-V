@@ -101,6 +101,27 @@ with st.sidebar:
         df["Priority"].unique()),  default=[])
     st.divider()
 
+    st.markdown("### Graph Physics")
+    physics_solver = st.selectbox(
+        "Physics Engine",
+        ["barnesHut", "forceAtlas2Based", "repulsion", "hierarchicalRepulsion"],
+        index=0,
+        key="physics_solver"
+    )
+    st.divider()
+
+    st.markdown("**Node Colors**")
+    st.markdown("""
+    <div style='font-size:13px;line-height:2;'>
+        <span style='color:#6366f1;font-size:16px;'>&#9679;</span> Blue = Job<br>
+        <span style='color:#10b981;font-size:16px;'>&#9679;</span> Green = Location<br>
+        <span style='color:#f59e0b;font-size:16px;'>&#9679;</span> Orange = Department<br>
+        <span style='color:#ef4444;font-size:16px;'>&#9679;</span> Red = Category<br>
+        <span style='color:#06b6d4;font-size:16px;'>&#9679;</span> Cyan = Skill
+    </div>
+    """, unsafe_allow_html=True)
+    st.divider()
+
     st.markdown(f"""
     <div style='text-align:center;'>
         <div style='color:#6366f1;font-size:1.6rem;font-weight:700;'>{total_nodes}</div>
@@ -167,21 +188,14 @@ with tab1:
         show_cats = st.checkbox("Categories",  True, key="cb_cats")
         show_skills = st.checkbox("Skills",      True, key="cb_skills")
         node_limit = st.slider("Max nodes", 50, 1300, 500, key="node_limit")
-        physics_solver = st.selectbox(
-            "Physics",
-            ["barnesHut", "forceAtlas2Based", "repulsion", "hierarchicalRepulsion"],
-            index=0,
-            key="physics_solver"
-        )
     with ctrl3:
         st.markdown("""
         <div style='font-size:12px;margin-top:8px;'>
-            <b style='color:#e2e8f0;'>Node Colors</b><br><br>
-            <span style='color:#6366f1;'>&#9679;</span> Blue = Job<br>
-            <span style='color:#10b981;'>&#9679;</span> Green = Location<br>
-            <span style='color:#f59e0b;'>&#9679;</span> Orange = Department<br>
-            <span style='color:#ef4444;'>&#9679;</span> Red = Category<br>
-            <span style='color:#06b6d4;'>&#9679;</span> Cyan = Skill
+            <span style='color:#6366f1;'>&#9679;</span> Job &nbsp;
+            <span style='color:#10b981;'>&#9679;</span> Location<br>
+            <span style='color:#f59e0b;'>&#9679;</span> Department<br>
+            <span style='color:#ef4444;'>&#9679;</span> Category<br>
+            <span style='color:#06b6d4;'>&#9679;</span> Skill
         </div>
         """, unsafe_allow_html=True)
 
@@ -200,19 +214,20 @@ with tab1:
     color_map = {"Job": "#6366f1", "Location": "#10b981",
                  "Department": "#f59e0b", "Category": "#ef4444", "Skill": "#06b6d4"}
 
-    # Build physics options based on selected solver
-    physics_configs = {
-        "barnesHut":              '{"enabled":true,"barnesHut":{"gravitationalConstant":-8000,"springLength":120,"springConstant":0.04},"solver":"barnesHut"}',
-        "forceAtlas2Based":       '{"enabled":true,"forceAtlas2Based":{"gravitationalConstant":-50,"springLength":100},"solver":"forceAtlas2Based"}',
-        "repulsion":              '{"enabled":true,"repulsion":{"nodeDistance":120,"springLength":100},"solver":"repulsion"}',
-        "hierarchicalRepulsion":  '{"enabled":true,"hierarchicalRepulsion":{"nodeDistance":120},"solver":"hierarchicalRepulsion"}',
+    # Dynamic physics engine from sidebar selector
+    physics_map = {
+        "barnesHut":             '{"enabled":true,"barnesHut":{"gravitationalConstant":-8000,"springLength":120,"springConstant":0.04},"solver":"barnesHut"}',
+        "forceAtlas2Based":      '{"enabled":true,"forceAtlas2Based":{"gravitationalConstant":-50,"springLength":100},"solver":"forceAtlas2Based"}',
+        "repulsion":             '{"enabled":true,"repulsion":{"nodeDistance":120,"springLength":100},"solver":"repulsion"}',
+        "hierarchicalRepulsion": '{"enabled":true,"hierarchicalRepulsion":{"nodeDistance":120},"solver":"hierarchicalRepulsion"}',
     }
-    selected_physics = physics_configs.get(
-        physics_solver, physics_configs["barnesHut"])
-
+    phys = physics_map.get(physics_solver, physics_map["barnesHut"])
     net = Network(height="640px", width="100%",
                   bgcolor="#0d1117", font_color="#e2e8f0")
-    net.set_options('{"physics":' + selected_physics + ',"nodes":{"borderWidth":2,"shadow":true,"font":{"color":"#e2e8f0","size":12}},"edges":{"color":{"color":"#6366f1","opacity":0.7},"width":2,"smooth":{"type":"continuous"},"arrows":{"to":{"enabled":true,"scaleFactor":0.5}}},"interaction":{"hover":true,"tooltipDelay":100,"navigationButtons":true,"selectConnectedEdges":true}}')
+    net.set_options('{"physics":' + phys + ',"nodes":{"borderWidth":2,"shadow":true,"font":{"color":"#e2e8f0","size":12}},"edges":{"color":{"color":"#6366f1","opacity":0.7},"width":2,"smooth":{"type":"continuous"},"arrows":{"to":{"enabled":true,"scaleFactor":0.5}}},"interaction":{"hover":true,"tooltipDelay":100,"navigationButtons":true,"selectConnectedEdges":true}}')
+
+    # Build a lookup of ALL node IDs for edge matching (fixes 0 relationships bug)
+    all_node_ids = {str(n["id"]) for n in nodes}
 
     added_nodes = set()
     filtered_nodes = [n for n in nodes if n["label"]
