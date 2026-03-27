@@ -6,8 +6,21 @@
 [![Groq](https://img.shields.io/badge/Groq-Llama3-purple.svg)](https://groq.com)
 [![Streamlit](https://img.shields.io/badge/Streamlit-Dashboard-red.svg)](https://streamlit.io)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Streamlit-FF4B4B.svg)](https://aiknowledgegraphbuilderforenterpriseinteligence.streamlit.app/)
 
 > An AI-powered platform that automatically builds dynamic knowledge graphs from enterprise job data, enabling intelligent semantic search, RAG-powered Q&A, and interactive graph visualization.
+
+---
+
+## 🌐 Live Demo
+
+🚀 **[Click here to explore the live app →](https://aiknowledgegraphbuilderforenterpriseinteligence.streamlit.app/)**
+
+---
+
+## 📸 Dashboard Preview
+
+![AI Knowledge Graph Builder Dashboard](assets/)
 
 ---
 
@@ -87,7 +100,7 @@ Raw Job Data (CSV)
 | **Embeddings** | all-MiniLM-L6-v2 | Text to 384-dim vectors |
 | **Dashboard** | Streamlit | Interactive web UI |
 | **Graph Viz** | PyVis + Plotly | Interactive graph visualization |
-| **Deployment** | ngrok / localtunnel | Expose Colab to browser |
+| **Deployment** | Streamlit Cloud | Live public deployment |
 | **Environment** | Google Colab | Cloud notebook execution |
 | **Total Cost** | **$0.00** | All free tools |
 
@@ -178,7 +191,7 @@ Natural Language Answer
 - Tab 3: RAG Semantic Search — chat interface powered by LangChain + Groq
 - Tab 4: Job Explorer — filterable table with demand score distribution
 - Tab 5: Global Insights — world map, treemap, sunburst, heatmap
-- Deployed via ngrok from Google Colab with public URL
+- Deployed via Streamlit Cloud with permanent public URL
 
 ---
 
@@ -206,7 +219,7 @@ Natural Language Answer
 
 ### Step 1 — Clone Repository
 ```bash
-git clone https://github.com/yourusername/ai-knowledge-graph-builder.git
+git clone https://github.com/SukumarDivi/AI_Knowledge_Graph_Builder_For_Enterprise_Inteligence.git
 ```
 
 ### Step 2 — Open in Google Colab
@@ -322,6 +335,10 @@ ai-knowledge-graph-builder/
 │       ├── processed_data_milestone1.csv     # Cleaned dataset (644 × 25)
 │       └── processed_data_with_skills.csv    # With skills column (644 × 27)
 │
+├── assets/
+│   └── screenshots/
+│       └── dashboard.png                     # Dashboard preview screenshot
+│
 ├── outputs/
 │   ├── milestone2_entities.csv               # Extracted entities
 │   ├── milestone2_relationships.csv          # Extracted relationships
@@ -330,11 +347,10 @@ ai-knowledge-graph-builder/
 │   ├── faiss_index_langchain/                # Saved FAISS index
 │   └── job_metadata.json                     # Job metadata for RAG
 │
-├── dashboard/
-│   ├── app.py                                # Streamlit dashboard
-│   ├── graph_utils.py                        # Neo4j data loading
-│   ├── search_utils.py                       # LangChain RAG search
-│   └── styles.css                            # Dark theme CSS
+├── app.py                                # Streamlit dashboard
+├── graph_utils.py                        # Neo4j data loading
+├── search_utils.py                       # LangChain RAG search
+└── styles.css                            # Dark theme CSS
 │
 └── README.md
 ```
@@ -343,9 +359,9 @@ ai-knowledge-graph-builder/
 
 ## 👥 Team
 
-| Name | Role |
-|---|---|
-| Sukumar Divi | Data Engineering, Knowledge Graph, RAG Pipeline, Dashboard |
+| Names |
+|---|
+| Sukumar Divi, Vanam Anushree |
 
 **Mentor:** Infosys Springboard Program
 
