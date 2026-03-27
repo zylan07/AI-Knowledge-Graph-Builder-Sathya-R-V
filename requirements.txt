@@ -9,6 +9,7 @@ numpy
 networkx
 matplotlib
 seaborn
+sendgrid
 
 # ── Database ──
 neo4j
