@@ -497,7 +497,7 @@ with tab3:
             active_chain, active_retriever = pine_chain, pine_retriever
             st.success("✅ Pinecone connected successfully!")
         else:
-            st.warning("⚠️ Pinecone unavailable — falling back to FAISS.")
+            # st.warning("⚠️ Pinecone unavailable — falling back to FAISS.")
             active_chain, active_retriever = faiss_chain, faiss_retriever
 
     st.markdown("**Try these queries:**")
