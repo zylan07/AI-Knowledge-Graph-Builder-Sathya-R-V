@@ -2,13 +2,14 @@
 
 [![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)](https://python.org)
 [![Neo4j](https://img.shields.io/badge/Neo4j-Aura-green.svg)](https://neo4j.com)
-[![LangChain](https://img.shields.io/badge/LangChain-Latest-orange.svg)](https://langchain.com)
+[![LangChain](https://img.shields.io/badge/LangChain-RAG-orange.svg)](https://langchain.com)
 [![Groq](https://img.shields.io/badge/Groq-Llama3-purple.svg)](https://groq.com)
 [![Streamlit](https://img.shields.io/badge/Streamlit-Dashboard-red.svg)](https://streamlit.io)
+[![SendGrid](https://img.shields.io/badge/SendGrid-Email-blue.svg)](https://sendgrid.com)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Live Demo](https://img.shields.io/badge/Live%20Demo-Streamlit-FF4B4B.svg)](https://aiknowledgegraphbuilderforenterpriseinteligence.streamlit.app/)
 
-> An AI-powered platform that automatically builds dynamic knowledge graphs from enterprise job data, enabling intelligent semantic search, RAG-powered Q&A, and interactive graph visualization.
+> An AI-powered platform that automatically builds dynamic knowledge graphs from enterprise job data, enabling intelligent semantic search, RAG-powered Q&A, interactive graph visualization, and automated email reporting.
 
 ---
 
@@ -18,15 +19,27 @@
 
 ---
 
+## 📸 Dashboard Preview
+
+![Dashboard Overview](./assests/image1.png)
+
+![Knowledge Graph View](./assests/image2.png)
+
+![RAG Semantic Search](./assests/image3.png)
+
+![Email Report Received](./assests/image4.png)
+
+---
+
 ## 📋 Table of Contents
 
 - [Project Overview](#-project-overview)
 - [Project Architecture](#-project-architecture)
 - [Tech Stack](#-tech-stack)
 - [Milestones](#-milestones)
+- [Email Reporting Feature](#-email-reporting-feature)
 - [Dataset](#-dataset)
 - [Setup & Installation](#-setup--installation)
-- [How to Run](#-how-to-run)
 - [Results](#-results)
 - [Project Structure](#-project-structure)
 - [Team](#-team)
@@ -35,7 +48,7 @@
 
 ## 🎯 Project Overview
 
-This project builds an end-to-end AI-powered Knowledge Graph system for enterprise job intelligence. It processes real-world job postings data, constructs a richly connected Neo4j Knowledge Graph, enables intelligent semantic search using RAG pipelines, and delivers an interactive dashboard for graph exploration and insight discovery.
+This project builds an end-to-end AI-powered Knowledge Graph system for enterprise job intelligence. It processes real-world job postings data, constructs a richly connected Neo4j Knowledge Graph, enables intelligent semantic search using RAG pipelines, and delivers an interactive dashboard for graph exploration and insight discovery — with built-in email reporting to share AI insights instantly.
 
 **Key Capabilities:**
 - Automated entity and relationship extraction from job data
@@ -43,6 +56,8 @@ This project builds an end-to-end AI-powered Knowledge Graph system for enterpri
 - RAG-powered natural language search over 644 job records
 - Interactive graph visualization with 1298 nodes and 5243 relationships
 - Real-time semantic Q&A using Groq Llama 3
+- Node AI Agent — click any graph node for instant AI explanation
+- 📧 Email Reporting — share node insights and search results with subgraph images via SendGrid
 
 ---
 
@@ -70,14 +85,17 @@ Raw Job Data (CSV)
 │   Milestone 3               │
 │   RAG + Semantic Search     │
 │   LangChain + FAISS         │
-│   Groq Llama 3              │
+│   vs Pinecone Evaluation    │
+│   FAISS wins 8/8 queries    │
 └────────────┬────────────────┘
              ↓
 ┌─────────────────────────────┐
 │   Milestone 4               │
 │   Interactive Dashboard     │
 │   Streamlit + PyVis         │
+│   Node AI Agent             │
 │   Plotly Visualizations     │
+│   📧 Email Reporting        │
 └─────────────────────────────┘
 ```
 
@@ -91,11 +109,13 @@ Raw Job Data (CSV)
 | **LLM** | Groq Llama 3.3-70B | NER + RAG answer generation |
 | **RAG Framework** | LangChain | Pipeline orchestration |
 | **Vector Store** | FAISS | Local semantic search (~36ms) |
+| **Cloud Vector Store** | Pinecone | Cloud semantic search (~674ms) |
 | **Embeddings** | all-MiniLM-L6-v2 | Text to 384-dim vectors |
 | **Dashboard** | Streamlit | Interactive web UI |
 | **Graph Viz** | PyVis + Plotly | Interactive graph visualization |
+| **Subgraph Images** | NetworkX + Matplotlib | Static PNG generation for email reports |
+| **Email Delivery** | SendGrid | Email report delivery with PNG attachments |
 | **Deployment** | Streamlit Cloud | Live public deployment |
-| **Environment** | Google Colab | Cloud notebook execution |
 | **Total Cost** | **$0.00** | All free tools |
 
 ---
@@ -127,7 +147,7 @@ Raw Job Data (CSV)
 - Built NetworkX in-memory graph for quick analysis
 - Constructed Neo4j Knowledge Graph using Cypher queries
 - Implemented LLM-based NER using Groq Llama 3 to extract 125 unique skills
-- Optimized API calls from 644 to 35 unique combinations
+- Optimized API calls from 644 to 35 unique combinations (94% reduction)
 
 **Graph Statistics:**
 ```
@@ -154,9 +174,10 @@ Relationships: 5243 total
 - Loaded 644 jobs from Neo4j with skills via REQUIRES relationships
 - Converted jobs to LangChain Documents with rich text descriptions
 - Built FAISS vector store with MMR retriever (fetch 30 → best 10)
-- Implemented LangChain RAG chain with Groq Llama 3
-- Tested and compared FAISS vs Pinecone (FAISS won 8/8 queries)
-- Average retrieval latency: FAISS 36ms vs Pinecone 674ms (18.7x faster)
+- Built Pinecone cloud vector store for comparison
+- Ran head-to-head evaluation across 8 test queries
+- FAISS won 8/8 queries — 18.7x faster than Pinecone at this scale
+- Average retrieval latency: FAISS 36ms vs Pinecone 674ms
 
 **RAG Pipeline:**
 ```
@@ -179,13 +200,74 @@ Natural Language Answer
 **Objective:** Build interactive graph visualization dashboard and deploy.
 
 **Tasks Completed:**
-- Built 5-tab Streamlit dashboard with dark glassmorphism theme
-- Tab 1: PyVis animated knowledge graph (all 1298 nodes, physics-based)
-- Tab 2: Analytics — Plotly charts for node and relationship distribution
-- Tab 3: RAG Semantic Search — chat interface powered by LangChain + Groq
-- Tab 4: Job Explorer — filterable table with demand score distribution
-- Tab 5: Global Insights — world map, treemap, sunburst, heatmap
+- Built 6-tab Streamlit dashboard with dark glassmorphism theme
+- Tab 1 — Graph Explorer: PyVis animated knowledge graph (1298 nodes, 4 physics engines)
+- Tab 2 — Analytics: Plotly charts for node/relationship distribution and top skills
+- Tab 3 — Semantic Search: RAG chat interface with FAISS and Pinecone toggle
+- Tab 4 — FAISS vs Pinecone: Visual comparison with latency gauges and results table
+- Tab 5 — Job Explorer: Filterable table with demand score histogram
+- Tab 6 — Global Insights: World map, treemap, sunburst chart, priority heatmap
+- Node AI Agent: Click any graph node → instant Groq LLM explanation
+- 📧 Email Reporting: Share node insights and search results with subgraph PNGs via SendGrid
 - Deployed via Streamlit Cloud with permanent public URL
+
+---
+
+## 📧 Email Reporting Feature
+
+A communication channel built using **SendGrid** that lets users share AI-generated insights directly from the dashboard. Two reporting scenarios are supported:
+
+### Scenario 1 — Node Click Report
+1. Click any node in the graph (e.g. a Skill node like **"Python"**)
+2. The Node AI Agent generates an instant explanation using Groq LLM
+3. Hit **"Share as Email Report"**
+4. The email is sent with:
+   - ✅ The full AI explanation text
+   - ✅ A static subgraph PNG showing Python → connected jobs, departments, categories
+   - ✅ The node's properties table
+
+```
+User clicks "Python" node
+        ↓
+Node AI Agent (Groq LLM) explains it
+        ↓
+NetworkX + Matplotlib generates subgraph PNG
+        ↓
+SendGrid sends email with PNG attachment
+        ↓
+Recipient receives full report 📩
+```
+
+### Scenario 2 — Search Result Report
+1. Search for e.g. **"Remote Data Scientist jobs in India"**
+2. Get 10 RAG-matched job results
+3. Hit **"Share as Email Report"**
+4. The email is sent with:
+   - ✅ The RAG-generated AI answer
+   - ✅ Top 10 job cards as a formatted table
+   - ✅ A static subgraph PNG showing those job nodes and their connections
+
+```
+User searches "Remote Data Scientist jobs in India"
+        ↓
+FAISS / Pinecone retrieves top 10 matching jobs
+        ↓
+Groq LLM generates RAG answer
+        ↓
+NetworkX + Matplotlib builds result subgraph PNG
+        ↓
+SendGrid sends email with report + PNG attachment
+        ↓
+Recipient receives full report 📩
+```
+
+### Email Setup (SendGrid)
+Add these to your `.streamlit/secrets.toml`:
+```toml
+SENDGRID_API_KEY = "SG.your_sendgrid_api_key"
+SENDER_EMAIL     = "verified_sender@yourdomain.com"
+```
+> **Note:** The sender email must be verified in your SendGrid account. A free SendGrid account supports up to 100 emails/day.
 
 ---
 
@@ -206,77 +288,40 @@ Natural Language Answer
 ## ⚙️ Setup & Installation
 
 ### Prerequisites
-- Google Colab account (free)
 - Neo4j Aura account (free) — [console.neo4j.io](https://console.neo4j.io)
 - Groq API key (free) — [console.groq.com](https://console.groq.com)
-- ngrok account (free) — [ngrok.com](https://ngrok.com)
+- Pinecone account (free) — [app.pinecone.io](https://app.pinecone.io)
+- SendGrid account (free) — [sendgrid.com](https://sendgrid.com)
 
 ### Step 1 — Clone Repository
 ```bash
 git clone https://github.com/SukumarDivi/AI_Knowledge_Graph_Builder_For_Enterprise_Inteligence.git
 ```
 
-### Step 2 — Open in Google Colab
-Upload the notebook to Google Colab or open directly from GitHub.
-
-### Step 3 — Update Credentials
-In the configuration cell update:
-```python
-NEO4J_URI      = "neo4j+s://your-instance.databases.neo4j.io"
-NEO4J_USER     = "neo4j"
-NEO4J_PASSWORD = "your-password"
-GROQ_API_KEY   = "gsk_your-key"
-```
-
-### Step 4 — Install Dependencies
+### Step 2 — Install Dependencies
 ```bash
-# Milestone 1 & 2
-pip install pandas networkx matplotlib seaborn neo4j groq
-
-# Milestone 3
-pip install langchain langchain-groq langchain-community langchain-core sentence-transformers faiss-cpu neo4j
-
-# Milestone 4
-pip install streamlit pyvis plotly pyngrok neo4j langchain langchain-groq langchain-community sentence-transformers faiss-cpu pandas
+pip install streamlit pyvis plotly neo4j langchain langchain-groq langchain-community
+pip install langchain-pinecone sentence-transformers faiss-cpu pinecone pandas
+pip install sendgrid networkx matplotlib
 ```
 
----
-
-## 🚀 How to Run
-
-### Milestone 1 — Data Preprocessing
-```
-1. Open MileStone_1_JOB_POSTINGS.ipynb in Google Colab
-2. Upload Job_Postings_dataset.csv
-3. Run all cells
-4. Download processed_data_milestone1.csv
-```
-
-### Milestone 2 — Knowledge Graph
-```
-1. Open Milestone_2_final.ipynb in Google Colab
-2. Upload processed_data_milestone1.csv
-3. Update Neo4j and Groq credentials in Cell 7 (Section 1.3)
-4. Run all cells
-5. View graph at console.neo4j.io
+### Step 3 — Configure Secrets
+Create `.streamlit/secrets.toml`:
+```toml
+NEO4J_URI        = "neo4j+s://your-instance.databases.neo4j.io"
+NEO4J_USER       = "neo4j"
+NEO4J_PASSWORD   = "your-password"
+GROQ_API_KEY     = "gsk_your-key"
+PINECONE_API_KEY = "your_pinecone_key"
+PINECONE_INDEX   = "job-knowledge-graph-rag"
+NGROK_TOKEN      = "your_ngrok_token"
+SENDGRID_API_KEY = "SG.your_sendgrid_key"
+SENDER_EMAIL     = "verified_sender@yourdomain.com"
 ```
 
-### Milestone 3 — RAG Search
-```
-1. Open Milestone_3_LangChain_Groq.ipynb in Google Colab
-2. Ensure Neo4j is running (resume at console.neo4j.io if paused)
-3. Update credentials in Cell 7 (Section 1.3)
-4. Run all cells
-5. Test queries in Section 6
-```
-
-### Milestone 4 — Dashboard
-```
-1. Open Milestone_4_Dashboard.ipynb in Google Colab
-2. Update credentials in Cell 5 (Section 1.2)
-3. Update NGROK_TOKEN in Cell 17 (Section 3.1)
-4. Run all cells in order
-5. Open the public URL printed in Cell 19
+### Step 4 — Run Dashboard
+```bash
+streamlit run app.py
 ```
 
 ---
@@ -314,37 +359,38 @@ pip install streamlit pyvis plotly pyngrok neo4j langchain langchain-groq langch
 ## 📁 Project Structure
 
 ```
-ai-knowledge-graph-builder/
+AI_Knowledge_Graph_Builder_For_Enterprise_Inteligence/
 │
 ├── notebooks/
-│   ├── MileStone_1_JOB_POSTINGS.ipynb       # Data preprocessing
-│   ├── Milestone_2_final.ipynb               # Knowledge graph construction
-│   ├── Milestone_3_LangChain_Groq.ipynb      # RAG semantic search
-│   └── Milestone_4_Dashboard.ipynb           # Interactive dashboard
+│   ├── MileStone_1_JOB_POSTINGS.ipynb              # Data preprocessing
+│   ├── Milestone_2_final.ipynb                      # Knowledge graph construction
+│   ├── Milestone_3_LangChain_Groq.ipynb             # FAISS RAG pipeline
+│   ├── Milestone_3_LangChain_Pinecone.ipynb         # Pinecone RAG pipeline
+│   └── Milestone_4_Dashboard.ipynb                  # Dashboard notebook
 │
 ├── data/
 │   ├── raw/
-│   │   └── Job_Postings_dataset.csv          # Original dataset
+│   │   └── Job_Postings_dataset.csv                 # Original dataset
 │   └── processed/
-│       ├── processed_data_milestone1.csv     # Cleaned dataset (644 × 25)
-│       └── processed_data_with_skills.csv    # With skills column (644 × 27)
+│       ├── processed_data_milestone1.csv            # Cleaned dataset (644 × 25)
+│       └── processed_data_with_skills.csv           # With skills column (644 × 27)
 │
-├── assets/
-│    └── dashboard.png                     # Dashboard preview screenshot
+├── Outputs/
+│   ├── milestone2_entities.csv                      # Extracted entities
+│   ├── milestone2_relationships.csv                 # Extracted relationships
+│   ├── milestone2_metrics.txt                       # Graph statistics
+│   └── knowledge_graph_sample.png                  # Graph visualization
 │
-├── outputs/
-│   ├── milestone2_entities.csv               # Extracted entities
-│   ├── milestone2_relationships.csv          # Extracted relationships
-│   ├── milestone2_metrics.txt                # Graph statistics
-│   ├── knowledge_graph_sample.png            # Graph visualization
-│   ├── faiss_index_langchain/                # Saved FAISS index
-│   └── job_metadata.json                     # Job metadata for RAG
+├── assests/
+│   ├── image1.png                                   # Dashboard overview screenshot
+│   ├── image2.png                                   # Knowledge graph screenshot
+│   └── image3.png                                   # RAG search screenshot
 │
-├── app.py                                # Streamlit dashboard
-├── graph_utils.py                        # Neo4j data loading
-├── search_utils.py                       # LangChain RAG search
-└── styles.css                            # Dark theme CSS
-│
+├── app.py                                           # Streamlit dashboard (6 tabs)
+├── graph_utils.py                                   # Neo4j data loading utilities
+├── search_utils.py                                  # LangChain RAG pipelines + email
+├── styles.css                                       # Dark glassmorphism theme
+├── requirements.txt                                 # Python dependencies
 └── README.md
 ```
 
@@ -352,11 +398,12 @@ ai-knowledge-graph-builder/
 
 ## 👥 Team
 
-| Names |
-|---|
-| Sukumar Divi, Vanam Anushree |
+| Name | Role |
+|---|---|
+| Sukumar Divi | Data Engineering, Knowledge Graph, RAG Pipeline, Dashboard |
+| Anushree Vanam | Data Engineering, Knowledge Graph, RAG Pipeline, Email Reporting |
 
-**Mentor:** Apeksha Rahangdale
+**Mentor:** Apeksha Rahangdale — Infosys Springboard AI Internship Program
 
 ---
 
@@ -366,7 +413,8 @@ ai-knowledge-graph-builder/
 - ✅ Extracted 125 unique skills using LLM-based NER (Groq Llama 3)
 - ✅ Optimized API calls from 644 to 35 — saving 94% tokens
 - ✅ Built RAG system 18.7x faster than Pinecone using FAISS
-- ✅ Deployed interactive dashboard with 5 tabs and live semantic search
+- ✅ Interactive dashboard with 6 tabs, node AI agent, live semantic search
+- ✅ Email reporting via SendGrid — node insights + search results with subgraph PNGs
 - ✅ Total project cost: **$0.00** — all free tools
 
 ---
@@ -374,16 +422,6 @@ ai-knowledge-graph-builder/
 ## 📄 License
 
 This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
-
----
-
-## 📸 Dashboard Preview
-
-![Dashboard Overview](./assests/image1.png)
-
-![Knowledge Graph View](./assests/image2.png)
-
-![RAG Semantic Search](./assests/image3.png)
 
 ---
 
@@ -395,6 +433,7 @@ This project is licensed under the MIT License — see the [LICENSE](LICENSE) fi
 - [LangChain](https://langchain.com) — RAG framework
 - [Meta FAISS](https://github.com/facebookresearch/faiss) — Vector search library
 - [Streamlit](https://streamlit.io) — Dashboard framework
+- [SendGrid](https://sendgrid.com) — Email delivery API
 
 ---
 
