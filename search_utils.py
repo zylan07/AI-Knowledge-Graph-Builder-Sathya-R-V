@@ -125,13 +125,30 @@ def build_pinecone_pipeline(jobs, groq_api_key, pinecone_api_key, index_name, em
 
 
 def run_search(rag_chain, retriever, query):
-    """Run search and return answer, results, latency"""
+    """Run search and return answer, results trimmed to AI-stated count, latency"""
+    import re
+
     start = time.time()
     answer = rag_chain.invoke(query)
     latency = round((time.time() - start) * 1000, 1)
+
     retrieved = retriever.invoke(query)
-    results = [doc.metadata for doc in retrieved]
-    return answer, results, latency
+    all_results = [doc.metadata for doc in retrieved]
+
+    # Parse the count the LLM explicitly stated e.g. "I found 3 jobs"
+    match = re.search(
+        r'(?:found|identified|retrieved|there\s+are|showing)\s+(\d+)\s+'
+        r'(?:matching\s+|relevant\s+|premium\s+|high[- ]priority\s+)?'
+        r'(?:job|listing|result|position|role)',
+        answer, re.IGNORECASE
+    )
+    if match:
+        ai_count = int(match.group(1))
+        display_results = all_results[:max(1, min(ai_count, len(all_results)))]
+    else:
+        display_results = all_results
+
+    return answer, display_results, latency
 
 
 NODE_AGENT_PROMPT = """You are an expert AI agent analyzing a knowledge graph node.
