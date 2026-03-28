@@ -9,10 +9,15 @@ from langchain_community.embeddings import HuggingFaceEmbeddings
 import streamlit as st
 
 RAG_PROMPT_TEMPLATE = """You are an intelligent job search assistant for an enterprise knowledge graph.
-Use these retrieved job listings to answer:
+Use ONLY the job listings below that are truly relevant to the question. Ignore listings that do not match.
+Retrieved job listings:
 {context}
 Question: {question}
-Give a helpful 2-3 sentence answer mentioning how many jobs found, key locations and patterns:"""
+Instructions:
+- Count ONLY the jobs from the listings above that directly match the question criteria (category, location, workplace, priority, etc.).
+- Start your answer with "I found X job(s)" where X is the exact count of matching jobs.
+- Then mention key locations and patterns in 2-3 sentences total.
+- Do NOT inflate the count. If only 3 jobs match, say 3."""
 
 
 def get_embeddings(model_name):
@@ -51,8 +56,8 @@ def build_faiss_pipeline(jobs, groq_api_key, embedding_model, llm_model, top_k):
     index_time = round((time.time() - start) * 1000, 1)
 
     retriever = vectorstore.as_retriever(
-        search_type="mmr",
-        search_kwargs={"k": top_k, "fetch_k": 30}
+        search_type="similarity_score_threshold",
+        search_kwargs={"k": top_k, "score_threshold": 0.3}
     )
     llm = ChatGroq(groq_api_key=groq_api_key,
                    model_name=llm_model, temperature=0.2, max_tokens=512)

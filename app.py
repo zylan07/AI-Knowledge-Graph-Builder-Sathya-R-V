@@ -633,8 +633,23 @@ with tab3:
         </div>
         """, unsafe_allow_html=True)
 
-        st.markdown(f"### Top {len(results)} Matching Jobs")
-        for i, job in enumerate(results, 1):
+        # ── Parse how many jobs the AI actually found from its answer ──
+        import re as _re
+        _count_match = _re.search(
+            r'\b(?:found\s+|identified\s+|retrieved\s+)?(\d+)\b(?:\s+(?:premium\s+|high[- ]priority\s+|matching\s+|relevant\s+)?(?:job|listing|result|position|role))',
+            answer, _re.IGNORECASE
+        )
+        if _count_match:
+            _ai_count = int(_count_match.group(1))
+            # Clamp between 1 and actual number of retrieved results
+            _display_count = max(1, min(_ai_count, len(results)))
+        else:
+            _display_count = len(results)
+
+        display_results = results[:_display_count]
+
+        st.markdown(f"### Top {len(display_results)} Matching Jobs")
+        for i, job in enumerate(display_results, 1):
             wp_color = {"Remote": "tag-remote", "On-Site": "tag-onsite",
                         "Hybrid": "tag-hybrid"}.get(job.get("workplace", ""), "tag-skill")
             pri_color = "tag-premium" if job.get(
