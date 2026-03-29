@@ -1,5 +1,5 @@
 # 🧠 AI Knowledge Graph Builder for Enterprise Intelligence
-
+> This repository is part of Infosys Springboard Internship (Batch 13). This version includes my individual contributions and documentation.
 [![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)](https://python.org)
 [![Neo4j](https://img.shields.io/badge/Neo4j-Aura-green.svg)](https://neo4j.com)
 [![LangChain](https://img.shields.io/badge/LangChain-RAG-orange.svg)](https://langchain.com)
@@ -295,7 +295,7 @@ SENDER_EMAIL     = "verified_sender@yourdomain.com"
 
 ### Step 1 — Clone Repository
 ```bash
-git clone https://github.com/SukumarDivi/AI_Knowledge_Graph_Builder_For_Enterprise_Inteligence.git
+git clone https://github.com/zylan07/AI-Knowledge-Graph-Builder-Sathya-R-V.git
 ```
 
 ### Step 2 — Install Dependencies
@@ -395,11 +395,20 @@ AI_Knowledge_Graph_Builder_For_Enterprise_Inteligence/
 ```
 
 ---
+## 👤 My Contribution
 
+- Prepared Agile documentation for all 4 milestones  
+- Worked on Milestone 3 (RAG + Semantic Search) presentation  
+- Assisted in project integration and testing  
+- Contributed to understanding FAISS vs Pinecone comparison  
+- Supported dashboard feature discussions and implementation ideas
+
+  
 ## 👥 Team
 
 | Name | Role |
 |---|---|
+| Sathya R V | Agile Documentation, Presentation, Project Integration |
 | Sukumar Divi | Data Engineering, Knowledge Graph, RAG Pipeline, Dashboard |
 | Anushree Vanam | Data Engineering, Knowledge Graph, RAG Pipeline, Email Reporting |
 
